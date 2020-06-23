@@ -1,0 +1,54 @@
+{
+  "name": "fibo-react",
+  "version": "0.0.1",
+  "description": "React SDK for fibotalk implementation",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kurohashi/fibo-react.git"
+  },
+  "keywords": [
+    "React",
+    "SDK",
+    "fibo",
+    "fibotalk",
+    "react-native",
+    "react-component",
+    "react-native-component",
+    "react",
+    "react native",
+    "mobile",
+    "ios",
+    "android",
+    "ui"
+  ],
+  "author": "fibotalk",
+  "email": "support@fibotalk.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kurohashi/fibo-react/issues"
+  },
+  "homepage": "https://github.com/kurohashi/fibo-react#readme",
+  "dependencies": {
+    "react-native-webview": "^10.3.1",
+    "react-native": "",
+    "react": ""
+  },
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.58.0",
+    "react-test-renderer": "16.11.0"
+  }
+}
