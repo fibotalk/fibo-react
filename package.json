@@ -1,54 +1,42 @@
 {
   "name": "fibo-react",
-  "version": "0.0.1",
-  "description": "React SDK for fibotalk implementation",
+  "title": "React Native Fibo SDK",
+  "version": "0.0.5",
+  "description": "TODO",
   "main": "index.js",
+  "files": [
+    "README.md",
+    "android",
+    "index.js",
+    "ios",
+    "react-native-fibo-react.podspec"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kurohashi/fibo-react.git"
+    "url": "git+https://github.com/kurohashi/fibo-react.git",
+    "baseUrl": "https://github.com/kurohashi/fibo-react"
   },
   "keywords": [
-    "React",
-    "SDK",
-    "fibo",
-    "fibotalk",
-    "react-native",
-    "react-component",
-    "react-native-component",
-    "react",
-    "react native",
-    "mobile",
-    "ios",
-    "android",
-    "ui"
+    "react-native"
   ],
-  "author": "fibotalk",
-  "email": "support@fibotalk.com",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kurohashi/fibo-react/issues"
+  "author": {
+    "name": "fibotalk",
+    "email": "support@fibotalk.com"
   },
-  "homepage": "https://github.com/kurohashi/fibo-react#readme",
-  "dependencies": {
-    "react-native-webview": "^10.3.1",
-    "react-native": "",
-    "react": ""
-  },
-  "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "test": "jest"
-  },
-  "jest": {
-    "preset": "react-native"
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "^16.8.1",
+    "react-native": ">=0.60.0-rc.0 <1.0.x",
+    "react-native-webview": "^10.3.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/runtime": "^7.6.2",
-    "babel-jest": "^24.9.0",
-    "jest": "^24.9.0",
-    "metro-react-native-babel-preset": "^0.58.0",
-    "react-test-renderer": "16.11.0"
+    "react-native-webview": "^10.3.1",
+    "react": "^16.9.0",
+    "react-native": "^0.61.5"
   }
 }
