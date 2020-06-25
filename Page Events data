@@ -1,0 +1,68 @@
+router case:
+
+two events are fired back to back
+{
+    "index": 1,
+    "isTransitioning": false,
+    "key": "StackRouterRoot",
+    "routes": [
+        {
+            "key": "id-1593076272737-1",
+            "params": [Object],
+            "routeName": "home"
+        },
+        {
+            "key": "id-1593076272737-2",
+            "params": [Object],
+            "routeName": "about"
+        }
+    ]
+}
+{
+    "index": 2,
+    "isTransitioning": true,
+    "key": "StackRouterRoot",
+    "routes": [
+        {
+            "key": "id-1593076272737-1",
+            "params": [Object],
+            "routeName": "home"
+        },
+        {
+            "key": "id-1593076272737-2",
+            "params": [Object],
+            "routeName": "about"
+        },
+        {
+            "key": "id-1593076272737-3",
+            "params": [Object],
+            "routeName": "home"
+        }
+    ]
+}
+
+Navigator case:
+
+1 event is fired
+{
+   "index":1,
+   "key":"stack-TNCpmiK7RvqY-n860xVRW",
+   "routeNames":[
+      "Home",
+      "Details"
+   ],
+   "routes":[
+      {
+         "key":"Home-voXqTtNYMBK90IC0H7zzm",
+         "name":"Home",
+         "params":"undefined"
+      },
+      {
+         "key":"Details-rBECvXLJf8088naFyQZhL",
+         "name":"Details",
+         "params":"undefined"
+      }
+   ],
+   "stale":false,
+   "type":"stack"
+}
