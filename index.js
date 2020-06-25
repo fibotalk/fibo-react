@@ -70,13 +70,13 @@ export default class Fiboview extends Component {
             return "not recogonized";
         switch(name) {
             case "userInfo":
-                this.webref.injectJavaScript(`fibo.setUserInfo(${val})`);
+                this.webref.injectJavaScript(`fibo.setUserInfo(${JSON.stringify(val)})`);
                 break;
             case "login":
-                this.webref.injectJavaScript(`fibo.login(${val})`);
+                this.webref.injectJavaScript(`fibo.login(${JSON.stringify(val)})`);
                 break;
             case "signup":
-                this.webref.injectJavaScript(`fibo.signup(${val})`);
+                this.webref.injectJavaScript(`fibo.signup(${JSON.stringify(val)})`);
                 break;
             case "click_event":
                 this.handleClick(e);
@@ -93,7 +93,7 @@ export default class Fiboview extends Component {
                 this.webref.style = styles.hidden;
                 break;
             default:
-                this.webref.injectJavaScript(`fibo.setEvent("${name}", "${val}", ${obj})`);
+                this.webref.injectJavaScript(`fibo.setEvent("${name}", "${val}", ${JSON.stringify(obj)})`);
         }
     }
 }
