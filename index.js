@@ -32,7 +32,7 @@ export default class Fiboview extends Component {
     render() {
         console.log(this.props);
         let url = 'http://unireply.com/andy.html?appid=' + this.props.appid;
-        let uiFunc = `window.fibotalkSettings=${this.props.userInfo}`;
+        let uiFunc = `window.fibotalkSettings=${JSON.stringify(this.props.userInfo)}`;
 
         return <WebView
         ref={(r) => {this.webref = r}}
