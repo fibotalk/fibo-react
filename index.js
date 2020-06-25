@@ -21,7 +21,7 @@ export default class Fiboview extends Component {
             misc.text = e._targetInst.child.memoizedProps || "";
         } catch (error) {
         }
-        this.webref.injectJavaScript(`fibo.setEvent("click_event", "${misc.text}", { misc: ${misc} })`);
+        this.webref.injectJavaScript(`fibo.setEvent("click_event", "${misc.text}", { misc: ${JSON.stringify(misc)} })`);
     }
 
     handlePageChange(e) {
