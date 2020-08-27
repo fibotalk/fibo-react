@@ -7,7 +7,11 @@ import {
   setNativeExceptionHandler,
 } from 'react-native-exception-handler';
 
-var currentPage = "", pageTs = "", appName = "";
+var currentPage = "",
+    pageTs = "",
+    appName = "",
+    deviceId = "",
+    appVer = "";
 
 /**
  * Main Fiboview component
@@ -25,15 +29,18 @@ export default class Fiboview extends Component {
             else if (openState.includes(state))
                 this.handlePageOpen(currentPage);
         });
-        appName = DeviceInfo.getApplicationName();
+
+        appName = DeviceInfo.getBundleId();
+        deviceId = DeviceInfo.getDeviceId();
+        appVer = DeviceInfo.getReadableVersion();
+
         setJSExceptionHandler((error, isFatal) => {
           console.log(error, isFatal);
+          let val = "not fatal";
+          if (isFatal)
+            val = "fatal"
           try {
-            let err = JSON.parse(JSON.stringify(error));
-            try {
-                err.fatal = isFatal;
-            } catch (error) {}
-            this.webref.injectJavaScript(`fibo.setEvent("application_crash", null, ${JSON.stringify(err)}, { website: "${appName}", page: "${currentPage}" })`);
+            this.webref.injectJavaScript(`fibo.setEvent("application_crash", "${val}", null, { website: "${appName}", page: "${currentPage}", deviceId: "${deviceId}", appVersion: "${appVer}" })`);
           } catch (error) {}
           throw new Error("unhandled exception");
         }, true);
@@ -41,7 +48,7 @@ export default class Fiboview extends Component {
         setNativeExceptionHandler((errorString) => {
           console.log(errorString);
           try {
-            this.webref.injectJavaScript(`fibo.setEvent("application_crash", ${JSON.stringify(errorString)}, {}, { website: "${appName}", page: "${currentPage}" })`);
+            this.webref.injectJavaScript(`fibo.setEvent("application_crash", ${JSON.stringify(errorString)}, {}, { website: "${appName}", page: "${currentPage}", deviceId: "${deviceId}", appVersion: "${appVer}" })`);
           } catch (error) {}
           throw new Error("unhandled exception");
         });
@@ -59,7 +66,7 @@ export default class Fiboview extends Component {
             }
         }
         try {
-            this.webref.injectJavaScript(`fibo.setEvent("click_event", "${misc.text}", { misc: ${JSON.stringify(misc)} }, { website: "${appName}", page: "${currentPage}" })`);
+            this.webref.injectJavaScript(`fibo.setEvent("click_event", "${misc.text}", { misc: ${JSON.stringify(misc)} }, { website: "${appName}", page: "${currentPage}", deviceId: "${deviceId}", appVersion: "${appVer}" })`);
         } catch (error) {}
     }
 
@@ -70,7 +77,7 @@ export default class Fiboview extends Component {
                 duration = Date.now() - pageTs;
             }
             try {
-                this.webref.injectJavaScript(`fibo.setEvent("page_close", "${currentPage}", { duration: ${duration} }, { website: "${appName}", page: "${currentPage}" })`);
+                this.webref.injectJavaScript(`fibo.setEvent("page_close", "${currentPage}", { duration: ${duration} }, { website: "${appName}", page: "${currentPage}", deviceId: "${deviceId}", appVersion: "${appVer}" })`);
             } catch (error) {}
         }
     }
@@ -79,7 +86,7 @@ export default class Fiboview extends Component {
         pageTs = Date.now();
         currentPage = newPage;
         try {
-            this.webref.injectJavaScript(`fibo.setEvent("page_open", "${currentPage}", {}, { website: "${appName}", page: "${currentPage}" })`);
+            this.webref.injectJavaScript(`fibo.setEvent("page_open", "${currentPage}", {}, { website: "${appName}", page: "${currentPage}", deviceId: "${deviceId}", appVersion: "${appVer}" })`);
         } catch (error) {}
     }
 
@@ -127,19 +134,17 @@ export default class Fiboview extends Component {
                     this.webref.injectJavaScript(`fibo.setUserInfo(${JSON.stringify(val)})`);
                     break;
                 case "login":
-                    this.webref.injectJavaScript(`fibo.login(${JSON.stringify(val)}, { website: "${appName}", page: "${currentPage}" })`);
+                    this.webref.injectJavaScript(`fibo.login(${JSON.stringify(val)}, { website: "${appName}", page: "${currentPage}", deviceId: "${deviceId}", appVersion: "${appVer}" })`);
                     break;
                 case "signup":
-                    this.webref.injectJavaScript(`fibo.signup(${JSON.stringify(val)}, { website: "${appName}", page: "${currentPage}" })`);
+                    this.webref.injectJavaScript(`fibo.signup(${JSON.stringify(val)}, { website: "${appName}", page: "${currentPage}", deviceId: "${deviceId}", appVersion: "${appVer}" })`);
                     break;
                 case "click_event":
                     this.handleClick(val);
                     break;
                 case "page_open":
                     this.handlePageClose();
-                    setTimeout(() => {
-                        this.handlePageOpen(val);
-                    }, 51);
+                    this.handlePageOpen(val);
                     break;
                 // case "open":
                 //     this.webref.injectJavaScript(`fibo.open({name: "messenger", type: "open"})`);
@@ -150,7 +155,7 @@ export default class Fiboview extends Component {
                 //     this.webref.style = styles.hidden;
                 //     break;
                 default:
-                    this.webref.injectJavaScript(`fibo.setEvent("${name}", "${val}", ${JSON.stringify(obj)}, { website: "${appName}", page: "${currentPage}" })`);
+                    this.webref.injectJavaScript(`fibo.setEvent("${name}", "${val}", ${JSON.stringify(obj)}, { website: "${appName}", page: "${currentPage}", deviceId: "${deviceId}", appVersion: "${appVer}" })`);
             }
         } catch (error) {}
     }
