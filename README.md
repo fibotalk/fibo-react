@@ -1,5 +1,12 @@
 # react-native-fibo-react
 
+## Dependencies
+1. react
+2. react-native
+3. react-native-webview
+4. react-native-device-info
+5. react-native-exception-handler
+
 ## Getting started
 
 `$ npm install fibo-react --save`
