@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, AppState } from 'react-native';
 import { WebView } from 'react-native-webview';
+import DeviceInfo from 'react-native-device-info';
+import {
+  setJSExceptionHandler,
+  setNativeExceptionHandler,
+} from 'react-native-exception-handler';
 
-var currentPage = "", pageTs = "";
+var currentPage = "", pageTs = "", appName = "";
 
 /**
  * Main Fiboview component
@@ -20,6 +25,26 @@ export default class Fiboview extends Component {
             else if (openState.includes(state))
                 this.handlePageOpen(currentPage);
         });
+        appName = DeviceInfo.getApplicationName();
+        setJSExceptionHandler((error, isFatal) => {
+          console.log(error, isFatal);
+          try {
+            let err = JSON.parse(JSON.stringify(error));
+            try {
+                err.fatal = isFatal;
+            } catch (error) {}
+            this.webref.injectJavaScript(`fibo.setEvent("application_crash", null, ${JSON.stringify(err)}, { website: "${appName}", page: "${currentPage}" })`);
+          } catch (error) {}
+          throw new Error("unhandled exception");
+        }, true);
+        
+        setNativeExceptionHandler((errorString) => {
+          console.log(errorString);
+          try {
+            this.webref.injectJavaScript(`fibo.setEvent("application_crash", ${JSON.stringify(errorString)}, {}, { website: "${appName}", page: "${currentPage}" })`);
+          } catch (error) {}
+          throw new Error("unhandled exception");
+        });
     }
 
     handleClick(e) {
@@ -33,7 +58,9 @@ export default class Fiboview extends Component {
                 misc.text = e;
             }
         }
-        this.webref.injectJavaScript(`fibo.setEvent("click_event", "${misc.text}", { misc: ${JSON.stringify(misc)} })`);
+        try {
+            this.webref.injectJavaScript(`fibo.setEvent("click_event", "${misc.text}", { misc: ${JSON.stringify(misc)} }, { website: "${appName}", page: "${currentPage}" })`);
+        } catch (error) {}
     }
 
     handlePageClose() {
@@ -42,14 +69,18 @@ export default class Fiboview extends Component {
             if (pageTs && !isNaN(pageTs)) {
                 duration = Date.now() - pageTs;
             }
-            this.webref.injectJavaScript(`fibo.setEvent("page_close", "${currentPage}", { page: "${currentPage}", duration: ${duration} })`);
+            try {
+                this.webref.injectJavaScript(`fibo.setEvent("page_close", "${currentPage}", { duration: ${duration} }, { website: "${appName}", page: "${currentPage}" })`);
+            } catch (error) {}
         }
     }
 
     handlePageOpen(newPage) {
         pageTs = Date.now();
         currentPage = newPage;
-        this.webref.injectJavaScript(`fibo.setEvent("page_open", "${currentPage}", { page: "${currentPage}" })`);
+        try {
+            this.webref.injectJavaScript(`fibo.setEvent("page_open", "${currentPage}", {}, { website: "${appName}", page: "${currentPage}" })`);
+        } catch (error) {}
     }
 
     render() {
@@ -88,37 +119,40 @@ export default class Fiboview extends Component {
     }
 
     set(name, val, obj) {
-        console.log("got to set", name, val);
         if (!name)
             return "not recogonized";
-        switch(name) {
-            case "userInfo":
-                this.webref.injectJavaScript(`fibo.setUserInfo(${JSON.stringify(val)})`);
-                break;
-            case "login":
-                this.webref.injectJavaScript(`fibo.login(${JSON.stringify(val)})`);
-                break;
-            case "signup":
-                this.webref.injectJavaScript(`fibo.signup(${JSON.stringify(val)})`);
-                break;
-            case "click_event":
-                this.handleClick(val);
-                break;
-            case "page_open":
-                this.handlePageClose();
-                this.handlePageOpen(val);
-                break;
-            // case "open":
-            //     this.webref.injectJavaScript(`fibo.open({name: "messenger", type: "open"})`);
-            //     this.webref.style = styles.visible;
-            //     break;
-            // case "close":
-            //     this.webref.injectJavaScript(`fibo.open({name: "messenger", type: "close"})`);
-            //     this.webref.style = styles.hidden;
-            //     break;
-            default:
-                this.webref.injectJavaScript(`fibo.setEvent("${name}", "${val}", ${JSON.stringify(obj)})`);
-        }
+        try {
+            switch(name) {
+                case "userInfo":
+                    this.webref.injectJavaScript(`fibo.setUserInfo(${JSON.stringify(val)})`);
+                    break;
+                case "login":
+                    this.webref.injectJavaScript(`fibo.login(${JSON.stringify(val)}, { website: "${appName}", page: "${currentPage}" })`);
+                    break;
+                case "signup":
+                    this.webref.injectJavaScript(`fibo.signup(${JSON.stringify(val)}, { website: "${appName}", page: "${currentPage}" })`);
+                    break;
+                case "click_event":
+                    this.handleClick(val);
+                    break;
+                case "page_open":
+                    this.handlePageClose();
+                    setTimeout(() => {
+                        this.handlePageOpen(val);
+                    }, 51);
+                    break;
+                // case "open":
+                //     this.webref.injectJavaScript(`fibo.open({name: "messenger", type: "open"})`);
+                //     this.webref.style = styles.visible;
+                //     break;
+                // case "close":
+                //     this.webref.injectJavaScript(`fibo.open({name: "messenger", type: "close"})`);
+                //     this.webref.style = styles.hidden;
+                //     break;
+                default:
+                    this.webref.injectJavaScript(`fibo.setEvent("${name}", "${val}", ${JSON.stringify(obj)}, { website: "${appName}", page: "${currentPage}" })`);
+            }
+        } catch (error) {}
     }
 }
 
