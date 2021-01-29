@@ -1,7 +1,7 @@
 {
   "name": "fibo-react",
   "title": "React Native Fibo SDK",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "TODO",
   "main": "index.js",
   "files": [
@@ -16,8 +16,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kurohashi/fibo-react.git",
-    "baseUrl": "https://github.com/kurohashi/fibo-react"
+    "url": "git+https://github.com/fibotalk/fibo-react.git",
+    "baseUrl": "https://github.com/fibotalk/fibo-react"
   },
   "keywords": [
     "react-native"
