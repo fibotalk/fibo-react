@@ -20,5 +20,22 @@
 import Fiboview from 'fibo-react';
 
 // TODO: What to do with the module?
-Fiboview;
+<Fiboview
+    appid="your gid"
+    ref={(e)=>{fibo = e}}
+/>
+
+// To use the fibo library function:
+
+// userInfo
+fibo.set("userInfo", { user: { userId: "" }, account: { accountId: "" } });
+
+// login
+fibo.set("login", { user: { userId: "" }, account: { accountId: "" } });
+
+// signup
+fibo.set("signup", { user: { userId: "" }, account: { accountId: "" } });
+
+// event
+fibo.set("event name", "event value", { /* Event properties */ });
 ```
