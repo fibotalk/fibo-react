@@ -1,4 +1,4 @@
 1. Change the version in package.json.
-2. Do `npm login`. Id and password can be found in bhumika handovers trello.
+2. Do `npm login`. Id: fibotalk. Password: fibo@11235813.
 3. Do `npm publish`.
 4. Done
